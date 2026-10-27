@@ -16632,7 +16632,7 @@ footer small{opacity:.6;display:block;margin-top:8px}
   </div>
   <div class="hair-layout">
     <div class="hair-visual rv" aria-live="polite">
-      <div class="hair-visual-top"><span>INSPIRAÇÃO DE PENTEADO</span><span id="hairIndex">01 / 04</span></div>
+      <div class="hair-visual-top"><span></span><span id="hairIndex">01 / 04</span></div>
       <div class="hair-art" id="hairArt"></div>
       <div class="hair-visual-caption"><span id="hairTag">SOLTO · POLIDO</span><strong id="hairVisualName">Ondas glamourosas</strong></div>
       <div class="hair-note"><span class="hair-note-icon">✳</span><span>Referência de estilo para personalizar no atendimento.</span></div>
