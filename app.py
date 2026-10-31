@@ -16564,7 +16564,13 @@ footer small{opacity:.6;display:block;margin-top:8px}
 #top{opacity:0;pointer-events:none;transition:opacity .3s}#top.on{opacity:1;pointer-events:auto}
 #toast{position:fixed;left:50%;bottom:30px;transform:translate(-50%,100px);background:var(--choc);color:var(--nude);padding:14px 26px;border-radius:999px;z-index:95;transition:transform .4s;box-shadow:0 14px 30px rgba(0,0,0,.3)}
 #toast.on{transform:translate(-50%,0)}
-@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}#hero h1 span{transform:none;opacity:1}html{scroll-behavior:auto}}
+/* movimento extra (sempre ligado) */
+#frame img{animation:breathe 8s ease-in-out infinite}@keyframes breathe{50%{transform:scale(1.045)}}
+.btn:not(.ghost){position:relative;overflow:hidden}
+.btn:not(.ghost)::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.5),transparent);transform:skewX(-20deg);animation:shine 3.6s ease-in-out infinite;pointer-events:none}
+@keyframes shine{0%,55%{left:-60%}100%{left:150%}}
+#sp{position:fixed;top:0;left:0;height:3px;width:0;background:linear-gradient(90deg,var(--champ),var(--nude));z-index:99;transition:width .1s}
+.look:hover,.qcard:hover{transform:translateY(-6px)}
 </style>
 </head>
 <body>
@@ -16727,7 +16733,7 @@ footer small{opacity:.6;display:block;margin-top:8px}
 const C = __CONFIG_JSON__;
 const $ = (s, r=document) => r.querySelector(s), $$ = (s, r=document) => [...r.querySelectorAll(s)];
 const el = (t, p={}, h='') => { const e = document.createElement(t); Object.assign(e, p); if (h) e.innerHTML = h; return e; };
-const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+const reduce = false; /* animações sempre ligadas */
 
 function waLink(msg){ return C.whatsapp ? `https://api.whatsapp.com/send?phone=${String(C.whatsapp).replace(/\D/g,'')}&text=${encodeURIComponent(msg)}` : `https://ig.me/m/${C.instagram}`; }
 function toast(t){ const x=$('#toast'); x.textContent=t; x.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(()=>x.classList.remove('on'),2600); }
@@ -16960,7 +16966,13 @@ function confetti(){
   let f=0; (function a(){ cx.clearRect(0,0,cv.width,cv.height); P.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=.4;p.r+=.2;cx.save();cx.translate(p.x,p.y);cx.rotate(p.r);cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2);cx.restore();}); if(++f<130) requestAnimationFrame(a); else cx.clearRect(0,0,cv.width,cv.height); })();
 }
 
+/* ---------- barra de progresso ---------- */
+(function(){ const b=el('div',{id:'sp'}); document.body.appendChild(b);
+  const u=()=>{ const h=document.documentElement.scrollHeight-innerHeight; b.style.width=(h>0?scrollY/h*100:0)+'%'; };
+  addEventListener('scroll',u,{passive:true}); u(); })();
+
 /* ---------- reveal ---------- */
+
 const io=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); $$('[data-to]',e.target).forEach(count); if(e.target.matches('[data-to]')) count(e.target); io.unobserve(e.target);} }),{threshold:.15});
 $$('.rv').forEach(n=>io.observe(n));
 </script>
