@@ -16632,7 +16632,7 @@ footer small{opacity:.6;display:block;margin-top:8px}
   </div>
   <div class="hair-layout">
     <div class="hair-visual rv" aria-live="polite">
-      <div class="hair-visual-top"><span></span><span id="hairIndex">01 / 04</span></div>
+      <div class="hair-visual-top"><span>INSPIRAÇÃO DE PENTEADO</span><span id="hairIndex">01 / 04</span></div>
       <div class="hair-art" id="hairArt"></div>
       <div class="hair-visual-caption"><span id="hairTag">SOLTO · POLIDO</span><strong id="hairVisualName">Ondas glamourosas</strong></div>
       <div class="hair-note"><span class="hair-note-icon">✳</span><span>Referência de estilo para personalizar no atendimento.</span></div>
@@ -16729,7 +16729,7 @@ const $ = (s, r=document) => r.querySelector(s), $$ = (s, r=document) => [...r.q
 const el = (t, p={}, h='') => { const e = document.createElement(t); Object.assign(e, p); if (h) e.innerHTML = h; return e; };
 const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-function waLink(msg){ return C.whatsapp ? `https://wa.me/${C.whatsapp}?text=${encodeURIComponent(msg)}` : `https://ig.me/m/${C.instagram}`; }
+function waLink(msg){ return C.whatsapp ? `https://api.whatsapp.com/send?phone=${String(C.whatsapp).replace(/\D/g,'')}&text=${encodeURIComponent(msg)}` : `https://ig.me/m/${C.instagram}`; }
 function toast(t){ const x=$('#toast'); x.textContent=t; x.classList.add('on'); clearTimeout(toast.t); toast.t=setTimeout(()=>x.classList.remove('on'),2600); }
 function copy(txt){
   const done=()=>toast('Mensagem copiada');
@@ -16902,7 +16902,7 @@ C.processo.forEach((p,i)=>$('#tl').appendChild(el('div',{className:'step rv'},`<
   const meses=['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
   const fmt=d=>d.toLocaleDateString('pt-BR',{weekday:'long',day:'2-digit',month:'long',year:'numeric'});
   const horas=[]; for(let h=6;h<=20;h++) horas.push(String(h).padStart(2,'0')+':00');
-  const msg=()=>`Olá, Rayssa! Meu nome é ${S.nome}. Quero agendar make para: ${S.srv}, para ${S.qtd} pessoa(s), ${S.local.toLowerCase()}, em ${S.date?S.date.toLocaleDateString('pt-BR'):''} por volta das ${S.time}.${S.obs.trim()?' Observação: '+S.obs.trim():''}`;
+  const msg=()=>`Olá, Rayssa! Meu nome é ${S.nome.trim()}.\n\nQuero agendar uma make:\n• Serviço: ${S.srv}\n• Data: ${S.date?S.date.toLocaleDateString('pt-BR'):''} às ${S.time}\n• Local: ${S.local}\n• Pessoas: ${S.qtd}`+(S.obs.trim()?`\n• Observação: ${S.obs.trim()}`:'')+`\n\nPode me confirmar a disponibilidade?`;
   const ok=()=>[!!S.srv, !!S.date&&!!S.time, S.nome.trim().length>1, true][step];
   function head(t){ return `<div class="dotsrow">${[0,1,2,3].map(i=>`<i class="${i<=step?'on':''}"></i>`).join('')}</div><h3>${t}</h3>`; }
   function foot(last){ return `<div class="nav2"><button class="btn ghost" id="bk" ${step?'':'style="visibility:hidden"'}>Voltar</button>${last?'':`<button class="btn" id="nx" ${ok()?'':'disabled'}>Continuar</button>`}</div>`; }
@@ -16927,8 +16927,8 @@ C.processo.forEach((p,i)=>$('#tl').appendChild(el('div',{className:'step rv'},`<
       $('#mn').onclick=()=>{S.qtd=Math.max(1,S.qtd-1);$('#qn').textContent=S.qtd;}; $('#pl').onclick=()=>{S.qtd=Math.min(15,S.qtd+1);$('#qn').textContent=S.qtd;};
     }
     if(step===3){
-      box.innerHTML=head('Confira seu pedido')+`<div class="recap">${S.srv}\n${fmt(S.date)} às ${S.time}\n${S.local} · ${S.qtd} pessoa(s)\nNome: ${S.nome}${S.obs.trim()?'\nObs.: '+S.obs.trim():''}</div><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" id="send" target="_blank" rel="noopener" href="${waLink(msg())}">Enviar pedido</a><button class="btn ghost" id="cp">Copiar mensagem</button></div>${C.whatsapp?'':'<p style="margin-top:14px;opacity:.7;font-size:.92rem">O botão abre o direct do Instagram. Copie a mensagem e cole na conversa.</p>'}`+foot(true);
-      $('#cp').onclick=()=>copy(msg()); $('#send').onclick=()=>{ confetti(); if(!C.whatsapp) copy(msg()); };
+      box.innerHTML=head('Confira seu pedido')+`<div class="recap">${S.srv}\n${fmt(S.date)} às ${S.time}\n${S.local} · ${S.qtd} pessoa(s)\nNome: ${S.nome}${S.obs.trim()?'\nObs.: '+S.obs.trim():''}</div><div style="display:flex;gap:12px;flex-wrap:wrap"><a class="btn" id="send" target="_blank" rel="noopener" href="${waLink(msg())}">Enviar pedido</a>${C.whatsapp?'':'<button class="btn ghost" id="cp">Copiar mensagem</button>'}</div>${C.whatsapp?'':'<p style="margin-top:14px;opacity:.7;font-size:.92rem">O botão abre o direct do Instagram. Copie a mensagem e cole na conversa.</p>'}`+foot(true);
+      if($('#cp')) $('#cp').onclick=()=>copy(msg()); $('#send').onclick=()=>{ confetti(); if(!C.whatsapp) copy(msg()); };
     }
     const nx=$('#nx'), bk=$('#bk');
     if(nx) nx.onclick=()=>{step++;render();}; if(bk) bk.onclick=()=>{step--;render();};
